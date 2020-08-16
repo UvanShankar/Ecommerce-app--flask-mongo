@@ -2,7 +2,7 @@
 from flask import Response, request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token
-
+from mongoengine.errors import *
 # project resources
 from models.users import Users
 from api.errors import unauthorized
@@ -37,7 +37,11 @@ class SignUpApi(Resource):
         """
         data = request.get_json()
         post_user = Users(**data)
-        post_user.save()
+        try:
+            post_user.save()
+        except NotUniqueError as exc:
+
+            return {'message': "Email Id already exits!!"}, 400
         output = {'id': str(post_user.id)}
         return jsonify({'result': output})
 
@@ -67,7 +71,10 @@ class LoginApi(Resource):
         :return: JSON object
         """
         data = request.get_json()
-        user = Users.objects.get(email=data.get('email'))
+        try:
+            user = Users.objects.get(email=data.get('email'))
+        except :
+            return unauthorized()
         auth_success = user.check_pw_hash(data.get('password'))
         if not auth_success:
             return unauthorized()
