@@ -82,6 +82,6 @@ class LoginApi(Resource):
             expiry = datetime.timedelta(days=5)
             access_token = create_access_token(identity=str(user.id), expires_delta=expiry)
             refresh_token = create_refresh_token(identity=str(user.id))
-            return jsonify({'result': {'access_token': access_token,
+            return jsonify({'jwt': access_token,
                                        'refresh_token': refresh_token,
-                                       'logged_in_as': f"{user.email}"}})
+                                       'user': f"{user.email}"})
