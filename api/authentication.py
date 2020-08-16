@@ -74,10 +74,10 @@ class LoginApi(Resource):
         try:
             user = Users.objects.get(email=data.get('email'))
         except :
-            return unauthorized()
+            return {'message': "Email Id does not exits!!"}, 400
         auth_success = user.check_pw_hash(data.get('password'))
         if not auth_success:
-            return unauthorized()
+            return {'message': "password wrong!!"}, 400
         else:
             expiry = datetime.timedelta(days=5)
             access_token = create_access_token(identity=str(user.id), expires_delta=expiry)
