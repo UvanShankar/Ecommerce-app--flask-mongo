@@ -12,7 +12,7 @@ from mongoengine import (Document,
 from flask_bcrypt import generate_password_hash, check_password_hash
 
 # project resources
-from models.meals import Meals
+from models.products import Products
 
 # external packages
 import re
@@ -45,8 +45,6 @@ class Users(Document):
 
     # Remove test user
     >>> new_user.delete()
-
-    .. seealso:: :class:`Access`, :class:`Phone`, :class:`models.meals.Meals`
     """
 
     email = EmailField(required=True, unique=True)

@@ -4,13 +4,13 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
-from models.meals import Meals
+from models.products import Products
 from api.errors import forbidden
 
 
-class MealsApi(Resource):
+class ProductsApi(Resource):
     """
-    Flask-resftul resource for returning db.meal collection.
+    Flask-resftul resource for returning db.product collection.
 
     :Example:
 
@@ -18,47 +18,47 @@ class MealsApi(Resource):
     >>> from flask_restful import Api
     >>> from app import default_config
 
-    # Create flask app, config, and resftul api, then add MealsApi route
+    # Create flask app, config, and resftul api, then add ProductsApi route
     >>> app = Flask(__name__)
     >>> app.config.update(default_config)
     >>> api = Api(app=app)
-    >>> api.add_resource(MealsApi, '/meal/')
+    >>> api.add_resource(ProductsApi, '/product/')
 
     """
     @jwt_required
     def get(self) -> Response:
         """
-        GET response method for all documents in meal collection.
+        GET response method for all documents in product collection.
         JSON Web Token is required.
 
         :return: JSON object
         """
-        output = Meals.objects()
+        output = Products.objects()
         return jsonify({'result': output})
 
     @jwt_required
     def post(self) -> Response:
         """
-        POST response method for creating meal.
+        POST response method for creating product.
         JSON Web Token is required.
         Authorization is required: Access(admin=true)
 
         :return: JSON object
         """
-        authorized: bool = Meals.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = Products.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             data = request.get_json()
-            post_user = Meals(**data).save()
+            post_user = Products(**data).save()
             output = {'id': str(post_user.id)}
             return jsonify({'result': output})
         else:
             return forbidden()
 
 
-class MealApi(Resource):
+class ProductApi(Resource):
     """
-    Flask-resftul resource for returning db.meal collection.
+    Flask-resftul resource for returning db.product collection.
 
     :Example:
 
@@ -66,49 +66,49 @@ class MealApi(Resource):
     >>> from flask_restful import Api
     >>> from app import default_config
 
-    # Create flask app, config, and resftul api, then add MealApi route
+    # Create flask app, config, and resftul api, then add productApi route
     >>> app = Flask(__name__)
     >>> app.config.update(default_config)
     >>> api = Api(app=app)
-    >>> api.add_resource(MealApi, '/meal/<meal_id>')
+    >>> api.add_resource(productApi, '/product/<product_id>')
 
     """
     #@jwt_required
-    def get(self, meal_id: str) -> Response:
+    def get(self, product_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in product collection.
 
         :return: JSON object
         """
-        output = Meals.objects.get(id=meal_id)
+        output = Products.objects.get(id=product_id)
         return jsonify({'result': output})
 
     #@jwt_required
-    def put(self, meal_id: str) -> Response:
+    def put(self, product_id: str) -> Response:
         """
-        PUT response method for updating a meal.
+        PUT response method for updating a product.
         JSON Web Token is required.
         Authorization is required: Access(admin=true)
 
         :return: JSON object
         """
         data = request.get_json()
-        put_user = Meals.objects(id=meal_id).update(**data)
+        put_user = Products.objects(id=product_id).update(**data)
         return jsonify({'result': put_user})
 
     #@jwt_required
     def delete(self, user_id: str) -> Response:
         """
-        DELETE response method for deleting single meal.
+        DELETE response method for deleting single product.
         JSON Web Token is required.
         Authorization is required: Access(admin=true)
 
         :return: JSON object
         """
-        authorized: bool = Meals.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = Products.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Meals.objects(id=user_id).delete()
+            output = Products.objects(id=user_id).delete()
             return jsonify({'result': output})
         else:
             return forbidden()
