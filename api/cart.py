@@ -6,6 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 # project resources
 from models.cart import Cart
 from api.errors import forbidden
+import json
 
 
 class CartApi(Resource):
@@ -45,5 +46,12 @@ class CartApi(Resource):
         :return: JSON object
         """
         data = request.get_json()
-        put_user = Cart.objects(id=cart_id).update(**data)
+        print('cartupdate')
+        print(data)
+        y = json.loads(data['products'])
+        print(y)
+        hh={
+            'products':y
+        }
+        put_user = Cart.objects(id=cart_id).update(**hh)#**data
         return jsonify({'result': put_user})
