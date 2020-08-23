@@ -25,7 +25,7 @@ class ProductsApi(Resource):
     >>> api.add_resource(ProductsApi, '/product/')
 
     """
-    @jwt_required
+   
     def get(self) -> Response:
         """
         GET response method for all documents in product collection.
@@ -72,7 +72,7 @@ class ProductApi(Resource):
     >>> api.add_resource(productApi, '/product/<product_id>')
 
     """
-    #@jwt_required
+    
     def get(self, product_id: str) -> Response:
         """
         GET response method for single documents in product collection.

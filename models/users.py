@@ -50,6 +50,7 @@ class Users(Document):
     email = EmailField(required=True, unique=True)
     password = StringField(required=True, min_length=6, regex=None)
     username = StringField(unique=False)
+    cartId = StringField(required=True,unique=True)
 
     def generate_pw_hash(self):
         self.password = generate_password_hash(password=self.password).decode('utf-8')

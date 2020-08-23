@@ -5,6 +5,7 @@ from flask_restful import Api
 from api.authentication import SignUpApi, LoginApi
 from api.user import UsersApi, UserApi
 from api.product import ProductsApi, ProductApi
+from api.cart import CartApi
 
 
 def create_routes(api: Api):
@@ -27,3 +28,5 @@ def create_routes(api: Api):
 
     api.add_resource(ProductsApi, '/product/')
     api.add_resource(ProductApi, '/product/<product_id>')
+    
+    api.add_resource(CartApi, '/cart/<cart_id>')

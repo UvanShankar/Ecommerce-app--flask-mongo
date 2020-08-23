@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from mongoengine.errors import *
 # project resources
 from models.users import Users
+from models.cart import Cart
 from api.errors import unauthorized
 
 # external packages
@@ -36,6 +37,19 @@ class SignUpApi(Resource):
         :return: JSON object
         """
         data = request.get_json()
+        
+        usercart = Cart().save()
+        output = {'id': str(usercart.id)}
+        
+        y = {"cartId": str(usercart.id)} 
+        print('usercart')
+        print(usercart.id)
+        print(usercart.products)
+        print('data')
+        print(data)
+        data.update(y)
+        print('data')
+        print(data)
         post_user = Users(**data)
         try:
             post_user.save()
@@ -84,4 +98,4 @@ class LoginApi(Resource):
             refresh_token = create_refresh_token(identity=str(user.id))
             return jsonify({'jwt': access_token,
                                        'refresh_token': refresh_token,
-                                       'user': f"{user.email}"})
+                                       'user': f"{user.username}"})
