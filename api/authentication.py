@@ -98,4 +98,5 @@ class LoginApi(Resource):
             refresh_token = create_refresh_token(identity=str(user.id))
             return jsonify({'jwt': access_token,
                                        'refresh_token': refresh_token,
+                                       'cartId':user.cartId,
                                        'user': f"{user.username}"})
